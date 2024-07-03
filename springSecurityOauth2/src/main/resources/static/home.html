@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <div id="content"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = sessionStorage.getItem('user');
+            const email = sessionStorage.getItem('email');
+            const picture = sessionStorage.getItem('picture');
+
+            const contentDiv = document.getElementById('content');
+
+            if (user) {
+                contentDiv.innerHTML = `<h1>Welcome, ${user}!</h1>
+                                        <p>Email: ${email}</p>
+                                        <img src="${picture}" alt="User Image" />`;
+            } else {
+                contentDiv.innerHTML = `<h1>Welcome!</h1>
+                                        <p><a href="/login">Login</a></p>`;
+            }
+        });
+
+        fetch('/user')
+            .then(response => response.json())
+            .then(data => {
+                sessionStorage.setItem('user', data.user);
+                sessionStorage.setItem('email', data.email);
+                sessionStorage.setItem('picture', data.picture);
+            });
+    </script>
+</body>
+</html>
